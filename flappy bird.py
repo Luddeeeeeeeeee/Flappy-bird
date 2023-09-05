@@ -7,18 +7,16 @@ screen = pygame.display.set_mode((500,500))
 
 
 playerd = pygame.image.load("player.png")
-
-blocks_rand = random.randint(-300,0)
+bl_rand = random.randint(0,11)
 block1_move = 400
 block2_move = 400
-
-
 
 playerd_y = 255
 gravity = 0
 run =  True
 
 while run:
+    
     class player:
         def drawing():
             global playerd
@@ -33,15 +31,19 @@ while run:
             if playerd_y > 500 or playerd_y < 0:
                 playerd_y = 255
 
-            
     class block_obstical:
         def __init__(self):
-
-            self.rect_list = [pygame.Rect((block1_move,-200),(100,400)),pygame.Rect((block2_move,400),(100,400))]
+            self.y = [255,400,300,255,400,300,255,400,300,255,400,300]
+            self.y2 = [-350,-200,-300,-350,-200,-300,-350,-200,-300,-350,-200,-300]
+            self.rect_list = [pygame.Rect((block1_move,self.y[bl_rand]),(100,400)),pygame.Rect((block2_move,self.y2[bl_rand]),(100,400))]
+            self.color = [(0,0,255),(0,0,0)]
+            self.colra_var = 0
 
         def drawing(self):
             for rect in self.rect_list:
-                pygame.draw.rect(screen,(0,0,255),rect,0)
+                pygame.draw.rect(screen,self.color[self.colra_var],rect,0)
+                self.colra_var += 1
+                
 
         @staticmethod
         def moving():
@@ -50,17 +52,20 @@ while run:
             block2_move -= 2
         @staticmethod
         def respawn():
-            global block2_move,block1_move
+            global block2_move,block1_move,bl_rand
             if block1_move == -100:
                 block1_move = 600
                 block2_move = 600
-
+                bl_rand = random.randint(0,2)
+                print(bl_rand)
+                
     for event in pygame.event.get():
         if event.type == KEYDOWN:
             if event.key ==  pygame.K_SPACE:
                 gravity -= 20
         if event.type == pygame.QUIT:
             run = False
+        
 
     screen.fill((255,255,255))
     Player = player
@@ -71,6 +76,7 @@ while run:
     Block.drawing()
     Block.moving()
     Block.respawn()
-
+    
     pygame.display.flip()
     Clock.tick(60)
+    
