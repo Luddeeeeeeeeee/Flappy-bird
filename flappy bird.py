@@ -1,35 +1,39 @@
 import pygame,random
 from pygame import *
-import time
 pygame.init
 Clock = pygame.time.Clock()
 screen = pygame.display.set_mode((500,500))
 
-
-playerd = pygame.image.load("player.png")
 bl_rand = random.randint(0,11)
 block1_move = 400
 block2_move = 400
 
-playerd_y = 255
+value = 255
 gravity = 0
 run =  True
 
 while run:
-    
+   
     class player:
-        def drawing():
-            global playerd
-            
-            screen.blit(playerd,(230,playerd_y))
-        def gravity_and_out_of_bounds():
-            global playerd_y,gravity
+        def __init__(self):
+            global value
+            self.playerd = pygame.image.load("player.png")
+            self.recte = self.playerd.get_rect()
+            self.recte.y = value
+
+
+        def gravity_and_out_of_bounds(self):
+            global gravity,value
 
             gravity += 0.5
-            playerd_y += gravity
+            value += gravity
 
-            if playerd_y > 500 or playerd_y < 0:
-                playerd_y = 255
+            if self.recte.y > 500 or self.recte.y < 0:
+                self.recte.y = 255
+
+        def drawing(self):
+            screen.blit(self.playerd,(230,self.recte.y))
+            print(gravity)
 
     class block_obstical:
         def __init__(self):
@@ -44,6 +48,7 @@ while run:
                 pygame.draw.rect(screen,self.color[self.colra_var],rect,0)
                 self.colra_var += 1
                 
+           
 
         @staticmethod
         def moving():
@@ -58,17 +63,20 @@ while run:
                 block2_move = 600
                 bl_rand = random.randint(0,2)
                 print(bl_rand)
+        
+
                 
     for event in pygame.event.get():
         if event.type == KEYDOWN:
+
             if event.key ==  pygame.K_SPACE:
                 gravity -= 20
         if event.type == pygame.QUIT:
             run = False
         
-
+    
     screen.fill((255,255,255))
-    Player = player
+    Player = player()
     Player.drawing()
     Player.gravity_and_out_of_bounds()
 
@@ -76,7 +84,8 @@ while run:
     Block.drawing()
     Block.moving()
     Block.respawn()
-    
+
     pygame.display.flip()
     Clock.tick(60)
+    
     
