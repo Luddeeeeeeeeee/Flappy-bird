@@ -20,6 +20,7 @@ while run:
             self.playerd = pygame.image.load("player.png")
             self.recte = self.playerd.get_rect()
             self.recte.y = value
+            self.recte.x = 230 
 
 
         def gravity_and_out_of_bounds(self):
@@ -33,11 +34,12 @@ while run:
 
         def drawing(self):
             screen.blit(self.playerd,(230,self.recte.y))
-            print(gravity)
+            pygame.draw.rect(screen,((15,150,100)),self.recte,2)
+            
 
     class block_obstical:
         def __init__(self):
-            self.y = [255,400,300,255,400,300,255,400,300,255,400,300]
+            self.y = [300,450,350,305,450,350,305,450,350,305,450,350]
             self.y2 = [-350,-200,-300,-350,-200,-300,-350,-200,-300,-350,-200,-300]
             self.rect_list = [pygame.Rect((block1_move,self.y[bl_rand]),(100,400)),pygame.Rect((block2_move,self.y2[bl_rand]),(100,400))]
             self.color = [(0,0,255),(0,0,0)]
@@ -54,7 +56,7 @@ while run:
                     run = False
 
                 
-           
+            
 
         @staticmethod
         def moving():
@@ -76,7 +78,7 @@ while run:
         if event.type == KEYDOWN:
 
             if event.key ==  pygame.K_SPACE:
-                gravity -= 20
+                gravity -= 15    
         if event.type == pygame.QUIT:
             run = False
         
@@ -90,7 +92,7 @@ while run:
     Block.drawing()
     Block.moving()
     Block.respawn()
-    Block.collisons(Player )
+    Block.collisons(Player)
 
     pygame.display.flip()
     Clock.tick(60)
