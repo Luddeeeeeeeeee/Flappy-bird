@@ -47,6 +47,12 @@ while run:
             for rect in self.rect_list:
                 pygame.draw.rect(screen,self.color[self.colra_var],rect,0)
                 self.colra_var += 1
+        def collisons(self,instance):
+            global run
+            for rect in self.rect_list:
+                if rect.colliderect(instance.recte):
+                    run = False
+
                 
            
 
@@ -84,6 +90,7 @@ while run:
     Block.drawing()
     Block.moving()
     Block.respawn()
+    Block.collisons(Player )
 
     pygame.display.flip()
     Clock.tick(60)
